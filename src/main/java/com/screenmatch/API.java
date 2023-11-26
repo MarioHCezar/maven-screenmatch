@@ -22,35 +22,38 @@ public class API {
             String baseUrl = "http://www.omdbapi.com/?t=";
             String apikey = "&apikey=d73f361a";
 
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create(baseUrl + search + apikey))
-                        .build();
-            HttpResponse<String> response = client
-                        .send(request, HttpResponse.BodyHandlers.ofString());
-
-            var json = response.body();
-            System.out.println(json);
-
-            // Gson gson = new Gson();
-            Gson gson = new GsonBuilder()
-                        .setFieldNamingPolicy(
-                                    FieldNamingPolicy.UPPER_CAMEL_CASE)
-                        .create();
-
-            // Title newTitle = gson.fromJson(json, Title.class);
-            var newTitle = gson.fromJson(json, TitleOmdb.class);
-            System.out.println(newTitle);
-
             try {
+                  HttpClient client = HttpClient.newHttpClient();
+                  HttpRequest request = HttpRequest.newBuilder()
+                              .uri(URI.create(baseUrl + search.replace(" ", "+") + apikey))
+                              .build();
+                  HttpResponse<String> response = client
+                              .send(request, HttpResponse.BodyHandlers.ofString());
+
+                  var json = response.body();
+                  System.out.println(json);
+
+                  // Gson gson = new Gson();
+                  Gson gson = new GsonBuilder()
+                              .setFieldNamingPolicy(
+                                          FieldNamingPolicy.UPPER_CAMEL_CASE)
+                              .create();
+
+                  // Title newTitle = gson.fromJson(json, Title.class);
+                  var newTitle = gson.fromJson(json, TitleOmdb.class);
+                  System.out.println(newTitle);
+
                   var anotherTitle = new Title(newTitle);
                   System.out.println(anotherTitle);
             } catch (NumberFormatException e) {
                   System.out.println("Ocorreu um erro de formato.");
-                  System.out.println("Erro: " + e.getMessage());
+                  System.out.println("Mensagem de erro: " + '\u0022' + e.getMessage() + '\u0022');
+            } catch (IllegalArgumentException e) {
+                  System.out.println("Erro no endereço fornecido. Verifique e tente novamente");
+                  System.out.println(e.getMessage());
+            } finally {
+                  System.out.println("Programa finalizado corretamente.");
             }
-
-            System.out.println("Programa finalizado corretamente.");
 
       }
 }
