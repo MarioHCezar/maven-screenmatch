@@ -43,7 +43,7 @@ public class Title {
 
     public Title(TitleOmdb newTitle) {
         this.name = newTitle.title();
-        this.debutYear = Integer.parseInt(newTitle.year());
+        this.debutYear = Integer.parseInt(newTitle.year().replace("-", ""));
         this.durationInMinutes = Integer.parseInt(newTitle.runtime().replace(" min", ""));
         this.type = newTitle.type();
     }

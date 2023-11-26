@@ -40,12 +40,17 @@ public class API {
 
             // Title newTitle = gson.fromJson(json, Title.class);
             var newTitle = gson.fromJson(json, TitleOmdb.class);
-            var anotherTitle = new Title(newTitle);
-
-
             System.out.println(newTitle);
-            System.out.println(anotherTitle);
 
+            try {
+                  var anotherTitle = new Title(newTitle);
+                  System.out.println(anotherTitle);
+            } catch (NumberFormatException e) {
+                  System.out.println("Ocorreu um erro de formato.");
+                  System.out.println("Erro: " + e.getMessage());
+            }
+
+            System.out.println("Programa finalizado corretamente.");
 
       }
 }
